@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>React na Prática – Aula completa</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{ceuma:{DEFAULT:'#0d4b81',700:'#0a3a64',500:'#1a6bb5',50:'#eef5fc',100:'#d9e8f7'},acc:'#f28c00'},fontFamily:{sans:['Inter','Segoe UI','system-ui','Arial','sans-serif'],mono:['JetBrains Mono','Consolas','monospace']}}}}
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;background:#f4f8fc;color:#14263a}
+.sec{display:none}.sec.on{display:block}
+.note{display:none}body.notes .note{display:block}
+input,select{color:#14263a!important;background:#fff!important;-webkit-text-fill-color:#14263a}
+pre{white-space:pre}.k{color:#ffb454}.s{color:#8ddc9a}
+.flash{animation:f .6s}@keyframes f{from{background:#ffe2b3}to{background:transparent}}
+.sbi{display:block;width:100%;text-align:left;padding:8px 12px;border-radius:10px;border:1px solid transparent}.sbi:hover{background:#eef5fc}.sbi.act{background:#0d4b81;color:#fff}.sbi.act small{color:#cfe3f7}
+</style>
+</head>
+<body class="font-sans text-[17px] leading-relaxed overflow-hidden flex flex-col">
+<header class="bg-gradient-to-r from-ceuma-700 to-ceuma text-white px-4 py-3 flex items-center justify-between text-sm shrink-0">
+  <div class="flex items-center gap-3"><button id="mn" class="rounded-lg bg-white/15 hover:bg-white/25 px-3 py-1 font-semibold" aria-label="Menu">☰ Menu</button><span class="w-2 h-6 rounded bg-acc hidden sm:block"></span><b class="tracking-wide hidden sm:block">CEUMA · Pós-Graduação · Desenvolvimento Web</b></div>
+  <span id="cnt" class="bg-white/15 rounded-full px-3 py-0.5 font-medium"></span>
+</header>
+<div class="h-1 bg-ceuma-100 shrink-0"><div id="bar" class="h-1 bg-acc transition-all duration-300" style="width:0"></div></div>
+<div class="flex-1 flex min-h-0 relative">
+  <aside id="sb" class="absolute md:static z-20 h-full w-72 shrink-0 bg-white border-r border-slate-200 overflow-auto p-3 shadow-xl md:shadow-none"></aside>
+  <div class="flex-1 min-w-0 flex flex-col">
+    <main class="flex-1 overflow-auto"><div class="max-w-5xl mx-auto px-6 py-8">
+<section class="sec" data-part="0">
+  <span class="inline-block bg-acc text-white text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Abertura · Apresentação do mentor</span>
+  <div class="mt-6 flex flex-col md:flex-row gap-8 items-start">
+    <div class="w-28 h-28 shrink-0 rounded-full bg-gradient-to-br from-ceuma-700 to-ceuma-500 text-white text-4xl font-extrabold flex items-center justify-center shadow-lg ring-4 ring-ceuma-100">WS</div>
+    <div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-ceuma">Olá, eu sou Werliton Silva</h1>
+      <p class="text-lg font-semibold text-acc mt-1">Specialist Frontend · Mentor de Desenvolvimento Web</p>
+      <p class="mt-5 text-slate-700 max-w-3xl">Atuo como especialista em Frontend e como mentor de desenvolvimento web. Nesta aula vamos construir juntos uma base sólida em React, dos componentes e hooks até a comunicação com APIs e o cache de dados, sempre com demos interativas, perguntas para a turma e foco em entender o porquê de cada conceito, e não apenas em decorar a sintaxe.</p>
+      <a href="https://www.linkedin.com/in/werliton-silva/" target="_blank" rel="noopener" class="inline-block mt-6 rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-5 py-2 shadow">Conectar no LinkedIn ↗</a>
+    </div>
+  </div>
+  <div class="note mt-8 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> apresente-se em 1 minuto e pergunte à turma o que esperam aprender. Anote as respostas para retomar no fechamento.</div>
+</section>
+<section class="sec" data-part="1">
+  <span class="inline-block bg-acc text-white text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Parte 1 · Fundamentos</span>
+  <h1 class="text-5xl font-extrabold text-ceuma mt-4 mb-2">React na Prática</h1>
+  <p class="text-xl text-slate-600 mb-8">Componentes, props, state e ciclo de vida com hooks</p>
+  <div class="grid md:grid-cols-4 gap-4">
+    <div class="rounded-2xl bg-white border border-ceuma-100 shadow-sm p-5"><div class="text-ceuma font-bold">1 · Componentes</div><p class="text-sm text-slate-500">JSX e props</p></div>
+    <div class="rounded-2xl bg-white border border-ceuma-100 shadow-sm p-5"><div class="text-ceuma font-bold">2 · State local</div><p class="text-sm text-slate-500">useState e re-render</p></div>
+    <div class="rounded-2xl bg-white border border-ceuma-100 shadow-sm p-5"><div class="text-ceuma font-bold">3 · Ciclo de vida</div><p class="text-sm text-slate-500">useEffect e cleanup</p></div>
+    <div class="rounded-2xl bg-ceuma text-white shadow-sm p-5"><div class="font-bold">Atalhos</div><p class="text-sm text-white/80">← → navegam · N mostra notas</p></div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> peça que todos abram um sandbox (StackBlitz). Pergunte quem já viu React e siga para o quiz.</div>
+</section>
+<section class="sec" data-part="1">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 0 · Diagnóstico</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">O que é um componente?</h2>
+  <div class="max-w-2xl rounded-2xl bg-white border border-slate-200 shadow-sm p-6" data-q>
+    <button class="opt" data-ok="0">Um arquivo CSS reutilizável</button>
+    <button class="opt" data-ok="1">Uma função que retorna a interface (JSX)</button>
+    <button class="opt" data-ok="0">Uma tabela do banco de dados</button>
+    <div class="fb mt-3 font-semibold"></div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> deixe votarem antes de clicar. Resposta: função que recebe props e devolve JSX.</div>
+</section>
+<section class="sec" data-part="1">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 1 · Componentes e props</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Props: os “parâmetros” do componente</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+      <label class="block text-sm font-semibold text-slate-600">Nome
+        <input id="pn" value="Ana" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ceuma-500"></label>
+      <label class="block text-sm font-semibold text-slate-600">Cargo
+        <input id="pr" value="Dev Front-end" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ceuma-500"></label>
+      <label class="block text-sm font-semibold text-slate-600">Cor
+        <select id="pc" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ceuma-500"><option value="#0d4b81">Azul</option><option value="#f28c00">Laranja</option><option value="#1b8a4b">Verde</option></select></label>
+      <div id="pv" class="rounded-xl p-5 text-white text-center shadow-md"></div>
+    </div>
+    <pre id="pcode" class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-sm p-5 overflow-auto"></pre>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> altere os campos e mostre o código mudando. Props são somente leitura. Erro comum: esquecer as chaves {} no JSX.</div>
+</section>
+<section class="sec" data-part="1">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 2 · Estado local</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">useState: memória que provoca re-render</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 text-center">
+      <div id="sv" class="text-7xl font-extrabold text-ceuma rounded-xl">0</div>
+      <div class="flex gap-3 justify-center mt-5 flex-wrap">
+        <button id="s1" class="rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2 shadow">Com useState (+1)</button>
+        <button id="s2" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-4 py-2">Variável comum (+1)</button>
+      </div>
+      <p class="mt-4 text-sm text-slate-500">Re-renders: <b id="rc">1</b> · variável comum: <b id="vc">0</b></p>
+    </div>
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-sm p-5 overflow-auto"><span class="k">function</span> Contador() {
+  <span class="k">const</span> [count, setCount] = <span class="k">useState</span>(0);
+  <span class="k">return</span> (
+    &lt;button onClick={() =&gt;
+      setCount(count + 1)}&gt;
+      {count}
+    &lt;/button&gt;
+  );
+}</pre>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> clique na variável comum: ela muda, a tela não. Só <i>state</i> avisa o React para redesenhar.</div>
+</section>
+<section class="sec" data-part="1">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 2 · Prever a saída</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Quanto vale count após um clique?</h2>
+  <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-sm p-5 mb-5 max-w-2xl">setCount(count + 1);
+setCount(count + 1);
+setCount(count + 1);   <span class="s">// count começa em 0</span></pre>
+  <div class="max-w-2xl rounded-2xl bg-white border border-slate-200 shadow-sm p-6" data-q>
+    <button class="opt" data-ok="0">3</button>
+    <button class="opt" data-ok="1">1, pois count é o mesmo valor (snapshot) nas três chamadas</button>
+    <button class="opt" data-ok="0">0</button>
+    <div class="fb mt-3 font-semibold"></div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> para somar 3, use setCount(c =&gt; c + 1). State é uma “foto” do render atual.</div>
+</section>
+<section class="sec" data-part="1">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 3 · Ciclo de vida</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">useEffect: montar, atualizar, desmontar</h2>
+  <div class="grid md:grid-cols-5 gap-6">
+    <div class="md:col-span-3 rounded-2xl bg-white border border-slate-200 shadow-sm p-6">
+      <label class="block text-sm font-semibold text-slate-600">Array de dependências
+        <select id="dm" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ceuma-500"><option value="v">[ ] (só na montagem)</option><option value="i">[id] (quando id muda)</option><option value="n">sem array (todo render)</option></select></label>
+      <div class="flex flex-wrap gap-2 my-4">
+        <button id="e1" class="rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-3 py-2">Montar</button>
+        <button id="e2" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-3 py-2">Desmontar</button>
+        <button id="e3" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-3 py-2">Mudar id</button>
+        <button id="e4" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-3 py-2">Re-render (outro state)</button>
+        <span id="eid" class="ml-auto self-center text-sm font-semibold text-acc"></span>
+      </div>
+      <div id="lg" class="h-52 overflow-auto rounded-xl bg-slate-900 text-slate-200 font-mono text-[13px] leading-7 p-3"></div>
+    </div>
+    <pre class="md:col-span-2 rounded-2xl bg-slate-900 text-slate-100 font-mono text-sm p-5 overflow-auto">useEffect(() =&gt; {
+  <span class="s">// efeito: após o render</span>
+  <span class="k">return</span> () =&gt; {
+    <span class="s">// cleanup</span>
+  };
+}, [id]);</pre>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> peça previsões do log. Sem array roda sempre. O cleanup roda antes do próximo efeito e na desmontagem. Em Strict Mode (dev) o React monta duas vezes.</div>
+</section>
+<section class="sec" data-part="1">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 3 · Quiz final</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Qual array de dependências roda o efeito só uma vez?</h2>
+  <div class="max-w-2xl rounded-2xl bg-white border border-slate-200 shadow-sm p-6" data-q>
+    <button class="opt" data-ok="0">Não passar array</button>
+    <button class="opt" data-ok="1">Array vazio []</button>
+    <button class="opt" data-ok="0">[count]</button>
+    <div class="fb mt-3 font-semibold"></div>
+  </div>
+  <div class="mt-6 max-w-2xl rounded-2xl bg-ceuma text-white p-5"><b>Próximos passos:</b> Parte 2 cobre hooks (useRef, useMemo, custom hooks) e estado global com Context.</div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> exercício em sandbox: componente Relógio com setInterval e cleanup.</div>
+</section>
+<section class="sec" data-part="2">
+  <span class="inline-block bg-acc text-white text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Parte 2 · Hooks e estado global</span>
+  <h1 class="text-5xl font-extrabold text-ceuma mt-4 mb-2">Mais hooks e Context</h1>
+  <p class="text-xl text-slate-600 mb-8">useRef, useMemo, hooks customizados e como compartilhar estado sem prop drilling</p>
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="rounded-2xl bg-white border border-ceuma-100 shadow-sm p-5"><div class="text-ceuma font-bold">4 · Outros hooks</div><p class="text-sm text-slate-500">useRef, useMemo e custom hooks</p></div>
+    <div class="rounded-2xl bg-white border border-ceuma-100 shadow-sm p-5"><div class="text-ceuma font-bold">5 · Estado global</div><p class="text-sm text-slate-500">Prop drilling e Context API</p></div>
+    <div class="rounded-2xl bg-ceuma text-white shadow-sm p-5"><div class="font-bold">Atalhos</div><p class="text-sm text-white/80">← → navegam · N mostra notas</p></div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> retome em 2 minutos a Parte 1: state provoca re-render; effect roda após o render.</div>
+</section>
+<section class="sec" data-part="2">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 4 · useRef</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">useRef: guardar valores e acessar o DOM sem re-render</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+      <input id="rin" placeholder="Campo controlado por ref" class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ceuma-500">
+      <div class="flex flex-wrap gap-2">
+        <button id="rf" class="rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2 shadow">inputRef.current.focus()</button>
+        <button id="rcb" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-4 py-2">cliques.current++</button>
+      </div>
+      <p class="text-sm text-slate-600">Valor do ref: <b id="rv">0</b> · Renders: <b id="rr">1</b> <span class="text-acc font-semibold">(não mudou!)</span></p>
+    </div>
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-sm p-5 overflow-auto"><span class="k">const</span> inputRef = <span class="k">useRef</span>(null);
+<span class="k">const</span> cliques  = <span class="k">useRef</span>(0);
+
+<span class="s">// muda sem re-render</span>
+cliques.current++;
+
+<span class="s">// acesso direto ao DOM</span>
+inputRef.current.focus();
+
+&lt;input ref={inputRef} /&gt;</pre>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> compare com useState: mudar ref não redesenha. Usos típicos: foco, timers (id do setInterval), valor anterior. Não use ref para dados exibidos na tela.</div>
+</section>
+<section class="sec" data-part="2">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 4 · useMemo</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">useMemo: evitar cálculo caro a cada render</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+      <label class="block text-sm font-semibold text-slate-600">Filtrar lista de 5.000 itens
+        <input id="mt" placeholder="ex.: 99" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ceuma-500"></label>
+      <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input id="mm" type="checkbox" checked class="w-4 h-4"> Usar useMemo</label>
+      <button id="mb" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-4 py-2">Re-render (outro state): <b id="mo">0</b></button>
+      <div class="rounded-xl bg-ceuma-50 p-4 text-sm">Itens encontrados: <b id="mf">5000</b><br>Cálculos executados: <b id="mc" class="text-acc text-xl">1</b></div>
+    </div>
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-sm p-5 overflow-auto"><span class="k">const</span> filtrados = <span class="k">useMemo</span>(
+  () =&gt; itens.filter(i =&gt;
+        i.includes(termo)),
+  [termo]
+);
+<span class="s">// só recalcula quando</span>
+<span class="s">// "termo" mudar</span></pre>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> desmarque useMemo e clique em re-render: o cálculo roda toda vez. Alerta para iniciantes: não use useMemo em tudo, só quando houver custo real.</div>
+</section>
+<section class="sec" data-part="2">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 4 · Hooks customizados</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Custom hook: reaproveitar lógica com estado</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-sm p-5 overflow-auto"><span class="k">function</span> useToggle(inicial = <span class="k">false</span>) {
+  <span class="k">const</span> [on, setOn] = <span class="k">useState</span>(inicial);
+  <span class="k">const</span> toggle = () =&gt; setOn(v =&gt; !v);
+  <span class="k">return</span> [on, toggle];
+}
+
+<span class="s">// em qualquer componente:</span>
+<span class="k">const</span> [aberto, alternar] = useToggle();</pre>
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+      <p class="text-sm text-slate-500">Dois componentes, a mesma lógica, estados independentes:</p>
+      <div class="flex items-center justify-between rounded-xl border border-slate-200 p-4"><span>Menu: <b id="t1l">fechado</b></span><button id="t1" class="rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2">Alternar</button></div>
+      <div class="flex items-center justify-between rounded-xl border border-slate-200 p-4"><span>Modo escuro: <b id="t2l">desligado</b></span><button id="t2" class="rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2">Alternar</button></div>
+    </div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> regra: o nome começa com “use” e só pode chamar hooks no topo da função. Compartilha lógica, não estado.</div>
+</section>
+<section class="sec" data-part="2">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 5 · Estado global</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">O problema: prop drilling</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-3">
+      <label class="block text-sm font-semibold text-slate-600">Estratégia
+        <select id="pdm" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"><option value="p">Só props (prop drilling)</option><option value="c">Com Context</option></select></label>
+      <input id="pdn" value="Ana" class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ceuma-500">
+      <div id="tree" class="space-y-2 pt-2"></div>
+    </div>
+    <div class="rounded-2xl bg-ceuma-50 border border-ceuma-100 p-6 text-sm">
+      <b class="text-ceuma">Leitura do diagrama</b>
+      <p class="mt-2">No modo <b>props</b>, Layout e Sidebar não usam o nome, mas precisam receber e repassar. Cada novo dado aumenta o acoplamento.</p>
+      <p class="mt-2">No modo <b>Context</b>, o dado vai direto do Provider ao componente que precisa.</p>
+    </div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> troque os modos e peça para a turma contar quantos componentes “tocam” no dado.</div>
+</section>
+<section class="sec" data-part="2">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 5 · Context API</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">createContext + Provider + useContext</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-[13px] p-5 overflow-auto"><span class="k">const</span> UserCtx = <span class="k">createContext</span>();
+
+<span class="k">function</span> Provider({ children }) {
+  <span class="k">const</span> [user, setUser] = <span class="k">useState</span>(<span class="s">'Ana'</span>);
+  <span class="k">return</span> (
+    &lt;UserCtx.Provider value={{ user, setUser }}&gt;
+      {children}
+    &lt;/UserCtx.Provider&gt;
+  );
+}
+
+<span class="s">// em qualquer filho:</span>
+<span class="k">const</span> { user } = <span class="k">useContext</span>(UserCtx);</pre>
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+      <div id="cnav" class="rounded-xl bg-ceuma text-white p-4 flex justify-between items-center"><span>Navbar: olá, <b id="cu1">Ana</b></span><button id="cb1" class="rounded bg-acc px-3 py-1 text-sm font-semibold">Trocar nome</button></div>
+      <div id="cft" class="rounded-xl bg-slate-100 p-4 flex justify-between items-center"><span>Rodapé (outro ramo): <b id="cu2">Ana</b></span><button id="cb2" class="rounded bg-ceuma text-white px-3 py-1 text-sm font-semibold">Trocar nome</button></div>
+      <p class="text-sm text-slate-500">Um botão em qualquer lugar altera o estado global e todos os consumidores atualizam.</p>
+    </div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> Context é ótimo para dados de baixa frequência (tema, usuário, idioma). Para estado global complexo ou muito dinâmico, existem Zustand e Redux Toolkit; cite-os sem aprofundar.</div>
+</section>
+<section class="sec" data-part="2">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 5 · Quiz final</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Quando usar Context em vez de props?</h2>
+  <div class="max-w-2xl rounded-2xl bg-white border border-slate-200 shadow-sm p-6" data-q>
+    <button class="opt" data-ok="0">Sempre, para todo estado do app</button>
+    <button class="opt" data-ok="1">Quando muitos componentes distantes precisam do mesmo dado</button>
+    <button class="opt" data-ok="0">Somente para guardar dados de formulário</button>
+    <div class="fb mt-3 font-semibold"></div>
+  </div>
+  <div class="mt-6 max-w-2xl rounded-2xl bg-ceuma text-white p-5"><b>Próximos passos:</b> Parte 3 cobre APIs com fetch, loading e erro, cleanup, race conditions e cache de dados.</div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> exercício: criar ThemeContext com alternância claro/escuro e um custom hook useTheme.</div>
+</section>
+<section class="sec" data-part="3">
+  <span class="inline-block bg-acc text-white text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Parte 3 · Dados</span>
+  <h1 class="text-5xl font-extrabold text-ceuma mt-4 mb-2">APIs, efeitos e cache</h1>
+  <p class="text-xl text-slate-600 mb-8">Buscar dados com fetch, tratar loading e erro, evitar race conditions e reaproveitar respostas</p>
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="rounded-2xl bg-white border border-ceuma-100 shadow-sm p-5"><div class="text-ceuma font-bold">6 · Comunicação com APIs</div><p class="text-sm text-slate-500">fetch, estados e cleanup</p></div>
+    <div class="rounded-2xl bg-white border border-ceuma-100 shadow-sm p-5"><div class="text-ceuma font-bold">7 · Cache de dados</div><p class="text-sm text-slate-500">hit, miss, TTL e bibliotecas</p></div>
+    <div class="rounded-2xl bg-ceuma text-white shadow-sm p-5"><div class="font-bold">8 · Fechamento</div><p class="text-sm text-white/80">Quiz e mini-projeto</p></div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> as chamadas aqui são simuladas com setTimeout, para você controlar tempo e erro em sala. O código mostrado é o mesmo padrão usado com fetch real.</div>
+</section>
+<section class="sec" data-part="3">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 6 · fetch + useEffect</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Toda requisição tem três estados</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <button id="fb" class="rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2 shadow">Buscar usuário</button>
+        <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input id="ff" type="checkbox" class="w-4 h-4"> Forçar erro</label>
+      </div>
+      <div id="fs" class="rounded-xl p-5 text-center font-semibold bg-slate-100 text-slate-600">idle: nada pedido ainda</div>
+    </div>
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-[13px] p-5 overflow-auto"><span class="k">const</span> [dados, setDados] = <span class="k">useState</span>(<span class="k">null</span>);
+<span class="k">const</span> [loading, setLoading] = <span class="k">useState</span>(<span class="k">true</span>);
+<span class="k">const</span> [erro, setErro] = <span class="k">useState</span>(<span class="k">null</span>);
+
+<span class="k">useEffect</span>(() =&gt; {
+  fetch(<span class="s">'/api/usuario'</span>)
+    .then(r =&gt; r.ok ? r.json() : Promise.reject())
+    .then(setDados)
+    .catch(() =&gt; setErro(<span class="s">'Falha'</span>))
+    .finally(() =&gt; setLoading(<span class="k">false</span>));
+}, []);</pre>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> peça para a turma nomear os três estados (loading, erro, sucesso) antes de clicar. Erro comum: esquecer de tratar r.ok, pois fetch só rejeita em falha de rede.</div>
+</section>
+<section class="sec" data-part="3">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 6 · Race condition</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Cleanup: a resposta antiga não pode vencer</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+      <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input id="rcl" type="checkbox" class="w-4 h-4"> Usar cleanup (ignore)</label>
+      <div class="flex flex-wrap gap-2">
+        <button id="ra" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-4 py-2">Usuário A (lento: 2s)</button>
+        <button id="rb" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-4 py-2">Usuário B (rápido: 0,5s)</button>
+        <button id="rz" class="rounded-lg text-slate-500 px-3 py-2 text-sm">limpar</button>
+      </div>
+      <div class="rounded-xl bg-ceuma-50 p-4">Tela mostra: <b id="rs" class="text-ceuma text-xl">nenhum</b></div>
+      <div id="rl" class="h-24 overflow-auto rounded-xl bg-slate-900 text-slate-200 font-mono text-[13px] leading-6 p-3"></div>
+    </div>
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-[13px] p-5 overflow-auto"><span class="k">useEffect</span>(() =&gt; {
+  <span class="k">let</span> ignorar = <span class="k">false</span>;
+
+  buscar(id).then(dados =&gt; {
+    <span class="k">if</span> (!ignorar) setDados(dados);
+  });
+
+  <span class="k">return</span> () =&gt; { ignorar = <span class="k">true</span>; };
+}, [id]);
+
+<span class="s">// ou: AbortController + fetch(url, { signal })</span></pre>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> sem cleanup, clique A e logo B: B chega primeiro, depois A chega e sobrescreve com dado antigo. Ligue o cleanup e repita. Conecte com o cleanup da Parte 1.</div>
+</section>
+<section class="sec" data-part="3">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 7 · Cache de dados</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Cache: não pergunte duas vezes a mesma coisa</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input id="cc" type="checkbox" checked class="w-4 h-4"> Cache ligado (TTL 15s)</label>
+        <button id="ci" class="rounded-lg text-sm border border-slate-300 text-slate-600 px-3 py-1">Invalidar cache</button>
+      </div>
+      <div class="flex gap-2"><button class="cu rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2" data-id="1">Usuário 1</button><button class="cu rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2" data-id="2">Usuário 2</button><button class="cu rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2" data-id="3">Usuário 3</button></div>
+      <div id="cr" class="rounded-xl p-4 bg-slate-100 text-slate-600">Escolha um usuário</div>
+      <div class="text-sm text-slate-600">Cache atual: <span id="ck" class="font-mono">vazio</span></div>
+    </div>
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-[13px] p-5 overflow-auto"><span class="k">const</span> cache = <span class="k">new</span> Map();
+
+<span class="k">async function</span> buscar(id) {
+  <span class="k">const</span> hit = cache.get(id);
+  <span class="k">if</span> (hit &amp;&amp; Date.now() - hit.t &lt; TTL)
+    <span class="k">return</span> hit.dados;      <span class="s">// HIT</span>
+
+  <span class="k">const</span> dados = <span class="k">await</span> api(id);  <span class="s">// MISS</span>
+  cache.set(id, { dados, t: Date.now() });
+  <span class="k">return</span> dados;
+}</pre>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> clique no mesmo usuário duas vezes: o segundo é instantâneo (HIT). Espere 15s ou invalide para voltar ao MISS. Discuta o risco de dado desatualizado: por isso existem TTL e invalidação.</div>
+</section>
+<section class="sec" data-part="3">
+  <span class="inline-block bg-ceuma-100 text-ceuma text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 7 · Bibliotecas</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Não reinvente: loading, erro, cache e cleanup prontos</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="space-y-3">
+      <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"><b class="text-ceuma">TanStack Query</b><p class="text-sm text-slate-500">Cache, revalidação, retry e invalidação. Padrão de mercado para dados de servidor.</p></div>
+      <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"><b class="text-ceuma">SWR</b><p class="text-sm text-slate-500">Mais enxuta, baseada em stale-while-revalidate: mostra o cache e atualiza em segundo plano.</p></div>
+      <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-4"><b class="text-ceuma">RTK Query</b><p class="text-sm text-slate-500">Camada de dados do Redux Toolkit, ideal se o app já usa Redux.</p></div>
+    </div>
+    <pre class="rounded-2xl bg-slate-900 text-slate-100 font-mono text-[13px] p-5 overflow-auto"><span class="k">const</span> { data, isLoading, error } =
+  <span class="k">useQuery</span>({
+    queryKey: [<span class="s">'usuario'</span>, id],
+    queryFn: () =&gt; buscar(id),
+    staleTime: 15_000,
+  });
+
+<span class="s">// loading, erro, cache, cleanup</span>
+<span class="s">// e race condition: tudo tratado</span></pre>
+  </div>
+  <div class="mt-6 max-w-2xl rounded-2xl bg-white border border-slate-200 shadow-sm p-6" data-q>
+    <b>O que significa stale-while-revalidate?</b>
+    <button class="opt" data-ok="0">Apagar o cache sempre que o usuário volta à tela</button>
+    <button class="opt" data-ok="1">Mostrar o dado em cache na hora e atualizar em segundo plano</button>
+    <button class="opt" data-ok="0">Esperar a API responder antes de mostrar qualquer coisa</button>
+    <div class="fb mt-3 font-semibold"></div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> mensagem central: entender o fetch manual primeiro explica o que essas bibliotecas resolvem. Em projeto real, prefira uma delas.</div>
+</section>
+<section class="sec" data-part="3">
+  <span class="inline-block bg-acc text-white text-xs font-semibold rounded-full px-3 py-1 uppercase tracking-wider">Bloco 8 · Fechamento</span>
+  <h2 class="text-3xl font-bold text-ceuma mt-3 mb-6">Quiz final e mini-projeto integrador</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6" data-q>
+      <b>Qual problema o cleanup do useEffect resolve numa requisição?</b>
+      <button class="opt" data-ok="0">Deixa a API mais rápida</button>
+      <button class="opt" data-ok="1">Impede que uma resposta antiga atualize a tela depois de uma mais nova</button>
+      <button class="opt" data-ok="0">Remove o loading</button>
+      <div class="fb mt-3 font-semibold"></div>
+    </div>
+    <div class="rounded-2xl bg-ceuma text-white p-6">
+      <b class="text-lg">Mini-projeto: lista de usuários</b>
+      <ul class="mt-3 space-y-2 text-sm list-disc pl-5">
+        <li><b>Componentes:</b> UserList e UserCard com props</li>
+        <li><b>State:</b> campo de busca com useState</li>
+        <li><b>Efeito:</b> fetch com loading, erro e cleanup</li>
+        <li><b>Context:</b> tema claro/escuro global</li>
+        <li><b>Cache:</b> reaproveitar usuários já buscados</li>
+        <li><b>Desafio:</b> trocar o fetch manual por TanStack Query</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note mt-6 rounded-xl border-l-4 border-acc bg-amber-50 p-4 text-sm"><b>Instrutor:</b> reserve 10 minutos para duplas começarem o projeto em sandbox. Peça que a turma volte aos slides das Partes 1 e 2 quando travar.</div>
+</section>
+    </div></main>
+    <nav class="shrink-0 bg-white border-t border-slate-200 px-4 pt-2 flex justify-between gap-2" style="padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))">
+      <button id="pv2" class="rounded-lg border border-ceuma text-ceuma hover:bg-ceuma-50 font-semibold px-4 py-2">← Anterior</button>
+      <button id="nt" class="rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 px-4 py-2">Notas (N)</button>
+      <button id="nx" class="rounded-lg bg-ceuma hover:bg-ceuma-500 text-white font-semibold px-4 py-2 shadow">Próximo →</button>
+    </nav>
+    <footer class="shrink-0 bg-ceuma-700 text-white/90 text-xs sm:text-sm text-center py-2 px-4"><b>Mentor:</b> Werliton Silva · Specialist Frontend</footer>
+  </div>
+</div>
+<script>
+
+var S=[].slice.call(document.querySelectorAll("section.sec")),i=0,$=function(x){return document.getElementById(x)};
+var PN=["Abertura","Parte 1 · Fundamentos","Parte 2 · Hooks e estado global","Parte 3 · APIs, efeitos e cache"],sb=$("sb"),html="",last=-1;
+S.forEach(function(s,k){var p=+s.dataset.part;if(p!==last){last=p;html+='<div class="text-xs font-bold uppercase tracking-wider text-ceuma mt-3 mb-1 px-2">'+PN[p]+'</div>'}
+var t=s.querySelector("h1,h2").textContent,g=s.querySelector("span");
+html+='<button class="sbi" data-i="'+k+'"><small class="block text-xs text-slate-500">'+(g?g.textContent:"")+'</small><span class="text-sm font-semibold">'+t+'</span></button>'});
+sb.innerHTML=html;
+var items=[].slice.call(sb.querySelectorAll(".sbi"));
+function menu(on){sb.style.display=on?"block":"none"}
+function mob(){return window.innerWidth<768}
+function go(n){i=Math.max(0,Math.min(S.length-1,n));S.forEach(function(s,k){s.classList.toggle("on",k===i)});
+items.forEach(function(b,k){b.classList.toggle("act",k===i)});
+$("bar").style.width=((i+1)/S.length*100)+"%";$("cnt").textContent=(i+1)+" / "+S.length;
+document.querySelector("main").scrollTop=0;items[i].scrollIntoView({block:"nearest"});
+try{localStorage.setItem("aula-slide",i)}catch(e){}}
+items.forEach(function(b){b.onclick=function(){go(+b.dataset.i);if(mob())menu(false)}});
+$("mn").onclick=function(){menu(sb.style.display==="none")};
+$("nx").onclick=function(){go(i+1)};$("pv2").onclick=function(){go(i-1)};
+$("nt").onclick=function(){document.body.classList.toggle("notes")};
+document.addEventListener("keydown",function(e){if(/INPUT|SELECT/.test(e.target.tagName))return;
+if(e.key==="ArrowRight")go(i+1);if(e.key==="ArrowLeft")go(i-1);
+if(e.key==="n"||e.key==="N")document.body.classList.toggle("notes");if(e.key==="m"||e.key==="M")menu(sb.style.display==="none")});
+var base="opt block w-full text-left my-2 rounded-xl border-2 border-slate-200 bg-white hover:border-ceuma hover:bg-ceuma-50 px-4 py-3 text-slate-800 transition";
+document.querySelectorAll(".opt").forEach(function(b){b.className=base;b.onclick=function(){
+var ok=b.dataset.ok==="1";b.className=base+(ok?" !border-emerald-500 !bg-emerald-50":" !border-red-500 !bg-red-50");
+b.closest("[data-q]").querySelector(".fb").textContent=ok?"✅ Correto!":"❌ Tente de novo."}});
+menu(!mob());var st=0;try{st=+localStorage.getItem("aula-slide")||0}catch(e){}go(st);
+(function(){var $=function(x){return document.getElementById(x)};function fl(el){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash")}function esc(t){return String(t).replace(/</g,"&lt;")}
+function props(){var n=$("pn").value,r=$("pr").value,c=$("pc").value,e=function(t){return t.replace(/</g,"&lt;")};
+$("pv").style.background=c;$("pv").innerHTML="<div class='text-2xl font-bold'>"+e(n)+"</div><div class='opacity-90'>"+e(r)+"</div>";
+$("pcode").textContent="function Perfil({ nome, cargo }) {\n  return (\n    <div style={{ background: '"+c+"' }}>\n      <h3>{nome}</h3>\n      <p>{cargo}</p>\n    </div>\n  );\n}\n\n<Perfil nome=\""+n+"\" cargo=\""+r+"\" />"}
+["pn","pr","pc"].forEach(function(x){$(x).oninput=props});props();
+
+var cnt=0,rc=1,vc=0;
+$("s1").onclick=function(){cnt++;rc++;$("sv").textContent=cnt;$("rc").textContent=rc;$("vc").textContent=vc;$("sv").classList.remove("flash");void $("sv").offsetWidth;$("sv").classList.add("flash")};
+$("s2").onclick=function(){vc++;$("vc").textContent=vc;$("rc").textContent=rc+" (tela não mudou)"};
+
+var m=false,id=1,lg=$("lg");
+function L(t){lg.innerHTML+=t+"<br>";lg.scrollTop=lg.scrollHeight}
+function mode(){return $("dm").value}
+function eff(){L("⚡ efeito executado (id="+id+")")}
+function clean(){L("🧹 cleanup do efeito anterior")}
+function show(){$("eid").textContent=m?"id = "+id:"(desmontado)"}
+$("e1").onclick=function(){if(m)return;m=true;L("▶ render (montagem)");eff();show()};
+$("e2").onclick=function(){if(!m)return;m=false;L("■ desmontagem");clean();show()};
+$("e3").onclick=function(){if(!m){L("⚠ monte primeiro");return}id++;L("↻ render (id mudou)");if(mode()!=="v"){clean();eff()}show()};
+$("e4").onclick=function(){if(!m){L("⚠ monte primeiro");return}L("↻ render (outro state mudou)");if(mode()==="n"){clean();eff()}};
+$("dm").onchange=function(){L("— modo trocado —")};show();
+})();
+(function(){var $=function(x){return document.getElementById(x)};function fl(el){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash")}function esc(t){return String(t).replace(/</g,"&lt;")}
+/* useRef */
+var cl=0;
+$("rf").onclick=function(){$("rin").focus()};
+$("rcb").onclick=function(){cl++;$("rv").textContent=cl};
+
+/* useMemo */
+var items=[];for(var n=0;n<5000;n++)items.push(String(n));
+var calc=1,other=0;
+function filt(){var t=$("mt").value;calc++;var f=items.filter(function(x){return x.indexOf(t)>-1});$("mf").textContent=f.length;$("mc").textContent=calc;fl($("mc"))}
+$("mt").oninput=filt;
+$("mb").onclick=function(){other++;$("mo").textContent=other;if(!$("mm").checked)filt()};
+$("mm").onchange=function(){calc=1;$("mc").textContent=1};
+
+/* useToggle */
+function tg(b,l,a,z){var on=false;$(b).onclick=function(){on=!on;$(l).textContent=on?a:z;fl($(l))}}
+tg("t1","t1l","aberto","fechado");tg("t2","t2l","ligado","desligado");
+
+/* prop drilling */
+function tree(){var c=$("pdm").value==="c",nm=esc($("pdn").value);
+var rows=[["App","dono do state",0],["Layout","recebe e repassa",1],["Sidebar","recebe e repassa",2],["Avatar","usa o nome",3]];
+$("tree").innerHTML=rows.map(function(r){var mid=r[2]===1||r[2]===2,use=r[2]===3;
+var tag=use?"bg-emerald-100 text-emerald-800":(mid&&!c?"bg-amber-100 text-amber-800":"bg-slate-100 text-slate-500");
+var txt=use?"usa: "+nm:(mid?(c?"não sabe do nome":"user={user} (só repassa)"):(c?"Provider":"state: user"));
+return "<div class='rounded-lg border border-slate-200 px-3 py-2 flex justify-between' style='margin-left:"+(r[2]*22)+"px'><b>&lt;"+r[0]+" /&gt;</b><span class='text-xs rounded-full px-2 py-1 "+tag+"'>"+txt+"</span></div>"}).join("")}
+$("pdm").onchange=tree;$("pdn").oninput=tree;tree();
+
+/* context */
+var names=["Ana","Bruno","Carla","Diego"],ni=0;
+function ch(){ni=(ni+1)%names.length;$("cu1").textContent=names[ni];$("cu2").textContent=names[ni];fl($("cnav"));fl($("cft"))}
+$("cb1").onclick=ch;$("cb2").onclick=ch;
+})();
+(function(){var $=function(x){return document.getElementById(x)};function fl(el){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash")}function esc(t){return String(t).replace(/</g,"&lt;")}
+function api(id,ms,fail){return new Promise(function(ok,no){setTimeout(function(){fail?no(new Error("500")):ok({id:id,nome:["Ana","Bruno","Carla"][(id-1)%3]})},ms)})}
+/* 3 estados */
+$("fb").onclick=function(){var el=$("fs");el.className="rounded-xl p-5 text-center font-semibold bg-amber-100 text-amber-800";el.textContent="⏳ loading: aguardando a API...";
+api(1,1200,$("ff").checked).then(function(d){el.className="rounded-xl p-5 text-center font-semibold bg-emerald-100 text-emerald-800";el.textContent="✅ sucesso: "+d.nome}).catch(function(){el.className="rounded-xl p-5 text-center font-semibold bg-red-100 text-red-800";el.textContent="❌ erro: falha na requisição"})};
+
+/* race condition */
+var cur=0,rl=$("rl");
+function RL(t){rl.innerHTML+=t+"<br>";rl.scrollTop=rl.scrollHeight}
+function req(n,ms){var my=++cur;RL("→ pediu "+n);api(n,ms).then(function(){
+if($("rcl").checked&&my!==cur){RL("🧹 resposta de "+n+" ignorada");return}
+$("rs").textContent="Usuário "+n;fl($("rs").parentNode);RL("← chegou "+n)})}
+$("ra").onclick=function(){req("A",2000)};$("rb").onclick=function(){req("B",500)};
+$("rz").onclick=function(){rl.innerHTML="";$("rs").textContent="nenhum";cur++};
+
+/* cache */
+var cache={};
+function ck(){var k=Object.keys(cache);$("ck").textContent=k.length?k.map(function(x){return "usuário "+x+" ("+Math.round((Date.now()-cache[x])/1000)+"s)"}).join(" · "):"vazio"}
+document.querySelectorAll(".cu").forEach(function(b){b.onclick=function(){var id=b.dataset.id,r=$("cr"),t0=Date.now();
+if($("cc").checked&&cache[id]&&Date.now()-cache[id]<15000){r.className="rounded-xl p-4 bg-emerald-100 text-emerald-800 font-semibold";r.textContent="✅ HIT: usuário "+id+" em 0 ms (veio do cache)";fl(r);return}
+r.className="rounded-xl p-4 bg-amber-100 text-amber-800 font-semibold";r.textContent="⏳ MISS: buscando na API...";
+api(id,800).then(function(){cache[id]=Date.now();r.className="rounded-xl p-4 bg-red-50 text-red-800 font-semibold";r.textContent="🌐 MISS: usuário "+id+" em "+(Date.now()-t0)+" ms (API)";fl(r);ck()})}});
+$("ci").onclick=function(){cache={};ck()};setInterval(ck,1000);
+})();
+</script>
+</body>
+</html>
